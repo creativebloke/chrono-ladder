@@ -91,6 +91,8 @@
   .summit .txt{font-family:var(--font-label);text-transform:uppercase;letter-spacing:.12em;font-size:.78rem;color:var(--mute);line-height:1.3}
   .summit .txt b{display:block;color:var(--lume);font-weight:600;letter-spacing:.06em;font-size:.92rem}
   .summit .price{font-family:var(--font-data);font-weight:700;font-size:1.15rem;color:var(--red);margin-left:6px}
+  .summit .summit-thumb{width:52px;height:52px;border-radius:3px;overflow:hidden;border:1px solid var(--steel-bright);flex:none}
+  .summit .summit-thumb img{width:100%;height:100%;object-fit:cover;display:block}
 
   /* ---------- HERO DIAL (svg) ---------- */
   .dial-stage{display:flex;justify-content:center}
@@ -161,6 +163,39 @@
   }
   .threshold .sub{display:block;font-family:var(--font-display);text-transform:none;letter-spacing:0;color:var(--mute);font-size:.86rem;font-weight:400;margin-top:4px;max-width:54ch}
 
+  /* ---------- SIZE COMPARISON ---------- */
+  .sizes-sec{padding:66px 0 14px;border-top:1px solid var(--steel)}
+  .sizes-sec h2{font-weight:900;font-size:clamp(1.7rem,3.6vw,2.5rem);letter-spacing:-.01em;margin:14px 0 14px}
+  .sizes-sec .intro{color:var(--mute);max-width:64ch}
+  .sizes-chart{margin-top:32px}
+  .sizes-axis,.sizes-row{display:grid;grid-template-columns:minmax(116px,184px) 1fr 40px;align-items:center;column-gap:14px}
+  .sizes-axis{height:22px;margin-bottom:8px}
+  .sizes-axis .ticks{position:relative;height:100%}
+  .sizes-axis .ticks span{position:absolute;top:2px;transform:translateX(-50%);font-family:var(--font-data);font-size:.66rem;color:var(--mute)}
+  .sizes-axis .ticks span.ultra{color:var(--red)}
+  .sizes-row{height:34px}
+  .sizes-row .nm2{font-family:var(--font-label);text-transform:uppercase;letter-spacing:.05em;font-size:.74rem;color:var(--lume);text-align:right;line-height:1.12}
+  .sizes-row .track{position:relative;height:100%}
+  .sizes-row .lane{position:absolute;left:0;right:0;top:50%;height:1px;transform:translateY(-50%);background:var(--steel)}
+  .sizes-row .ref{position:absolute;top:-3px;bottom:-3px;left:92.857%;border-left:1px dashed var(--red);opacity:.5}
+  .sizes-row .dot{position:absolute;top:50%;width:12px;height:12px;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 8px rgba(0,0,0,.4)}
+  .sizes-row .mm{font-family:var(--font-data);font-size:.82rem;color:var(--mute);text-align:left}
+  .sizes-row.mech .dot{background:var(--gold)}
+  .sizes-row.mech .mm{color:var(--gold)}
+  .sizes-row.quartz .dot{background:var(--cool)}
+  .sizes-row.quartz .mm{color:var(--cool)}
+  .sizes-row.apple .dot{background:var(--red)}
+  .sizes-row.apple .mm{color:var(--red)}
+  .sizes-row.apple{background:linear-gradient(90deg,rgba(224,74,43,.12),transparent 80%)}
+  .sizes-row.summit{background:linear-gradient(90deg,rgba(201,169,107,.12),transparent 80%)}
+  .sizes-row.summit .dot{box-shadow:0 0 0 3px rgba(201,169,107,.35),0 0 8px rgba(0,0,0,.4)}
+  .sizes-key{display:flex;gap:22px;flex-wrap:wrap;margin-top:24px}
+  .sizes-key span{font-family:var(--font-label);text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;color:var(--mute);display:flex;align-items:center;gap:9px}
+  .sizes-key i{width:13px;height:13px;border-radius:50%;display:inline-block;flex:none}
+  .sizes-key .m{background:var(--gold)}
+  .sizes-key .q{background:var(--cool)}
+  .sizes-key .a{background:var(--red)}
+
   /* ---------- READ ---------- */
   .read{padding:78px 0 96px;border-top:1px solid var(--steel);margin-top:40px}
   .read h2{font-weight:900;font-size:clamp(1.7rem,3.6vw,2.5rem);letter-spacing:-.01em;margin:14px 0 30px}
@@ -192,6 +227,9 @@
     .pick .nm{grid-column:1;grid-row:auto}
     .pick .spec{grid-column:1;grid-row:auto;text-align:left;margin-top:4px}
     .pick .note{grid-column:1;grid-row:auto}
+    .sizes-axis,.sizes-row{grid-template-columns:90px 1fr 30px;column-gap:10px}
+    .sizes-row{height:auto;min-height:38px;padding:5px 0}
+    .sizes-row .nm2{font-size:.64rem;line-height:1.15}
   }
   @media (prefers-reduced-motion:reduce){
     .sweep-hand,.sub-hand{animation:none}
@@ -209,6 +247,7 @@
       <h1>Everything under&nbsp;the <em>Hamilton</em>.</h1>
       <p class="lede">The Khaki Field Auto Chrono is the summit. Below it the ground shifts — and somewhere on the way down, the tick stops being mechanical. Here's the whole climb.</p>
       <div class="summit">
+        <span class="summit-thumb"><img src="images/hamilton-khaki-field-auto-chrono.jpg" alt="Hamilton Khaki Field Auto Chrono, black dial"></span>
         <span class="dot"></span>
         <span class="txt">The one you want<b>Khaki Field Auto Chrono · H-21 · 60h</b></span>
         <span class="price">£1,615</span>
@@ -398,6 +437,98 @@
 
   </div>
 </div>
+
+<section class="wrap sizes-sec">
+  <span class="eyebrow">On the wrist</span>
+  <h2>How they measure up.</h2>
+  <p class="intro">Case diameter, every pick on a single scale — measured against your Apple Watch Ultra (49&nbsp;mm) as the yardstick. The red line is the Ultra; almost the entire mechanical field sits well inside it.</p>
+  <div class="sizes-chart">
+    <div class="sizes-axis">
+      <span></span>
+      <span class="ticks">
+        <span style="left:14.286%">38</span>
+        <span style="left:28.571%">40</span>
+        <span style="left:42.857%">42</span>
+        <span style="left:57.143%">44</span>
+        <span style="left:71.429%">46</span>
+        <span style="left:92.857%" class="ultra">49</span>
+      </span>
+      <span></span>
+    </div>
+
+    <div class="sizes-row apple">
+      <span class="nm2">Apple Watch Ultra</span>
+      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:92.857%"></span></span>
+      <span class="mm">49</span>
+    </div>
+    <div class="sizes-row mech">
+      <span class="nm2">Tissot PRS 516</span>
+      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:64.286%"></span></span>
+      <span class="mm">45</span>
+    </div>
+    <div class="sizes-row mech summit">
+      <span class="nm2">Hamilton Khaki Field</span>
+      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:57.143%"></span></span>
+      <span class="mm">44</span>
+    </div>
+    <div class="sizes-row quartz">
+      <span class="nm2">Citizen Eco-Drive</span>
+      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:57.143%"></span></span>
+      <span class="mm">44</span>
+    </div>
+    <div class="sizes-row quartz">
+      <span class="nm2">Timex Expedition</span>
+      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:50%"></span></span>
+      <span class="mm">43</span>
+    </div>
+    <div class="sizes-row mech">
+      <span class="nm2">Christopher Ward C65</span>
+      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:35.714%"></span></span>
+      <span class="mm">41</span>
+    </div>
+    <div class="sizes-row mech">
+      <span class="nm2">Farer Chronograph</span>
+      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:21.429%"></span></span>
+      <span class="mm">39</span>
+    </div>
+    <div class="sizes-row mech">
+      <span class="nm2">Yema Speedgraf</span>
+      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:21.429%"></span></span>
+      <span class="mm">39</span>
+    </div>
+    <div class="sizes-row quartz">
+      <span class="nm2">Seiko Speedtimer</span>
+      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:21.429%"></span></span>
+      <span class="mm">39</span>
+    </div>
+    <div class="sizes-row mech">
+      <span class="nm2">Baltic Bicompax 002</span>
+      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:14.286%"></span></span>
+      <span class="mm">38</span>
+    </div>
+    <div class="sizes-row mech">
+      <span class="nm2">Seagull 1963</span>
+      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:14.286%"></span></span>
+      <span class="mm">38</span>
+    </div>
+    <div class="sizes-row quartz">
+      <span class="nm2">Furlan Marri</span>
+      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:14.286%"></span></span>
+      <span class="mm">38</span>
+    </div>
+    <div class="sizes-row quartz">
+      <span class="nm2">Dan Henry 1964</span>
+      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:14.286%"></span></span>
+      <span class="mm">38</span>
+    </div>
+  </div>
+  <div class="sizes-key">
+    <span><i class="m"></i>Mechanical</span>
+    <span><i class="q"></i>Quartz · solar · meca-quartz</span>
+    <span><i class="a"></i>Apple Watch Ultra — your 49&nbsp;mm yardstick</span>
+  </div>
+  <p class="intro" style="margin-top:14px;font-size:.82rem">Figures are nominal case diameter (excluding crown). The Hamilton is highlighted in gold as the summit; the Apple Watch Ultra's 49&nbsp;mm is its case height.</p>
+</section>
 
 <section class="wrap read">
   <span class="eyebrow">The honest read</span>
