@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Field Chronograph Ladder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;900&family=Saira+Condensed:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0F1115;
+    --panel:#171A20;
+    --panel-2:#1E222A;
+    --steel:#2B313B;
+    --steel-bright:#454C59;
+    --lume:#E9E3D3;
+    --mute:#8A909B;
+    --gold:#C9A96B;
+    --gold-dim:#6E5E3C;
+    --cool:#8AA6B4;
+    --cool-dim:#4C5E68;
+    --red:#E04A2B;
+    --font-display:'Archivo',system-ui,sans-serif;
+    --font-label:'Saira Condensed',sans-serif;
+    --font-data:'Space Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--ink);
+    color:var(--lume);
+    font-family:var(--font-display);
+    font-weight:400;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--red);color:#fff}
+
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+
+  .eyebrow{
+    font-family:var(--font-label);
+    text-transform:uppercase;
+    letter-spacing:.34em;
+    font-weight:600;
+    font-size:.72rem;
+    color:var(--mute);
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    padding:72px 0 48px;
+    background:
+      radial-gradient(120% 90% at 78% 18%, rgba(201,169,107,.10), transparent 55%),
+      radial-gradient(80% 60% at 12% 0%, rgba(138,166,180,.07), transparent 60%);
+    border-bottom:1px solid var(--steel);
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    gap:48px;
+    align-items:center;
+  }
+  .hero h1{
+    font-weight:900;
+    font-size:clamp(2.6rem,6.4vw,4.6rem);
+    line-height:.98;
+    letter-spacing:-.02em;
+    margin:18px 0 22px;
+  }
+  .hero h1 em{font-style:normal;color:var(--red)}
+  .hero .lede{
+    font-size:1.06rem;
+    color:#C7C5BC;
+    max-width:38ch;
+    margin-bottom:30px;
+  }
+  .summit{
+    display:inline-flex;
+    align-items:center;
+    gap:14px;
+    padding:13px 18px;
+    border:1px solid var(--steel-bright);
+    border-radius:2px;
+    background:linear-gradient(180deg,rgba(224,74,43,.08),transparent);
+  }
+  .summit .dot{width:9px;height:9px;border-radius:50%;background:var(--red);box-shadow:0 0 12px var(--red);flex:none}
+  .summit .txt{font-family:var(--font-label);text-transform:uppercase;letter-spacing:.12em;font-size:.78rem;color:var(--mute);line-height:1.3}
+  .summit .txt b{display:block;color:var(--lume);font-weight:600;letter-spacing:.06em;font-size:.92rem}
+  .summit .price{font-family:var(--font-data);font-weight:700;font-size:1.15rem;color:var(--red);margin-left:6px}
+
+  /* ---------- HERO DIAL (svg) ---------- */
+  .dial-stage{display:flex;justify-content:center}
+  .dial{width:min(360px,82vw);height:auto;filter:drop-shadow(0 24px 50px rgba(0,0,0,.55))}
+  @keyframes sweep{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+  @keyframes sub{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+  .sweep-hand{transform-origin:200px 200px;animation:sweep 60s linear infinite}
+  .sub-hand{transform-origin:130px 200px;animation:sub 24s steps(60) infinite}
+
+  /* ---------- LADDER ---------- */
+  .ladder-head{padding:70px 0 34px;border-bottom:1px solid var(--steel)}
+  .ladder-head h2{font-weight:900;font-size:clamp(1.7rem,3.6vw,2.5rem);letter-spacing:-.01em;margin:14px 0 14px}
+  .ladder-head p{color:var(--mute);max-width:60ch}
+  .ladder-head .key{display:flex;gap:24px;flex-wrap:wrap;margin-top:22px}
+  .key span{font-family:var(--font-label);text-transform:uppercase;letter-spacing:.14em;font-size:.74rem;color:var(--mute);display:flex;align-items:center;gap:9px}
+  .key i{width:22px;height:3px;display:inline-block}
+  .key .m{background:var(--gold)}
+  .key .q{background:var(--cool)}
+
+  .ladder{position:relative;padding:18px 0 10px;margin-left:6px;border-left:1.5px solid var(--steel)}
+
+  .tier{position:relative;padding:42px 0 42px 40px}
+  .tier::before{
+    content:"";position:absolute;left:-7.5px;top:54px;
+    width:13px;height:13px;border-radius:50%;
+    background:var(--ink);border:2px solid var(--cool);
+  }
+  .tier.mech::before{border-color:var(--gold)}
+
+  .tier-top{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:6px}
+  .tier-price{font-family:var(--font-data);font-weight:700;font-size:clamp(1.5rem,3.4vw,2.1rem);letter-spacing:-.02em}
+  .tier.mech .tier-price{color:var(--gold)}
+  .tier.quartz .tier-price{color:var(--cool)}
+  .chip{
+    font-family:var(--font-label);text-transform:uppercase;letter-spacing:.16em;
+    font-size:.66rem;font-weight:600;padding:5px 10px;border-radius:2px;
+    border:1px solid var(--steel-bright);color:var(--mute);white-space:nowrap;
+  }
+  .tier.mech .chip{color:var(--gold);border-color:var(--gold-dim)}
+  .tier.quartz .chip{color:var(--cool);border-color:var(--cool-dim)}
+  .tier-name{font-family:var(--font-label);text-transform:uppercase;letter-spacing:.1em;color:var(--mute);font-size:.86rem;font-weight:500;margin-bottom:22px}
+
+  .picks{display:grid;gap:1px;background:var(--steel);border:1px solid var(--steel);border-radius:3px;overflow:hidden}
+  .pick{background:var(--panel);padding:18px 20px;display:grid;grid-template-columns:1fr auto;gap:6px 20px;align-items:start;transition:background .25s}
+  .pick:hover{background:var(--panel-2)}
+  .pick .nm{font-weight:700;font-size:1.04rem;letter-spacing:-.01em}
+  .pick .note{grid-column:1/2;color:#B4B2A8;font-size:.92rem;max-width:62ch}
+  .pick .spec{
+    grid-column:2;grid-row:1/3;text-align:right;
+    font-family:var(--font-data);font-size:.78rem;color:var(--mute);line-height:1.7;white-space:nowrap;
+  }
+  .pick .spec b{color:var(--lume);font-weight:700}
+  .flag{display:inline-block;margin-top:8px;font-family:var(--font-label);text-transform:uppercase;letter-spacing:.12em;font-size:.66rem;color:var(--red)}
+
+  /* ---------- THRESHOLD ---------- */
+  .threshold{position:relative;margin:8px 0;padding:26px 0 26px 40px}
+  .threshold .line{
+    position:absolute;left:-40px;right:0;top:50%;height:1px;
+    background:linear-gradient(90deg,var(--red),rgba(224,74,43,0) 92%);
+    box-shadow:0 0 18px rgba(224,74,43,.5);
+  }
+  .threshold .label{
+    position:relative;display:inline-block;background:var(--ink);padding-right:16px;
+    font-family:var(--font-label);text-transform:uppercase;letter-spacing:.2em;font-weight:600;
+    font-size:.78rem;color:var(--red);
+  }
+  .threshold .sub{display:block;font-family:var(--font-display);text-transform:none;letter-spacing:0;color:var(--mute);font-size:.86rem;font-weight:400;margin-top:4px;max-width:54ch}
+
+  /* ---------- READ ---------- */
+  .read{padding:78px 0 96px;border-top:1px solid var(--steel);margin-top:40px}
+  .read h2{font-weight:900;font-size:clamp(1.7rem,3.6vw,2.5rem);letter-spacing:-.01em;margin:14px 0 30px}
+  .paths{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .path{padding:26px 24px;border:1px solid var(--steel);border-radius:3px;background:var(--panel)}
+  .path.mech{border-top:3px solid var(--gold)}
+  .path.look{border-top:3px solid var(--cool)}
+  .path h3{font-family:var(--font-label);text-transform:uppercase;letter-spacing:.14em;font-size:.92rem;margin-bottom:12px}
+  .path.mech h3{color:var(--gold)}
+  .path.look h3{color:var(--cool)}
+  .path p{color:#BBB9AF;font-size:.98rem}
+  .path .out{margin-top:16px;font-family:var(--font-data);font-size:.84rem;color:var(--lume)}
+  .path .out b{color:var(--gold)}
+  .path.look .out b{color:var(--cool)}
+
+  footer{padding:30px 0 60px;color:var(--mute);font-size:.8rem;font-family:var(--font-data)}
+  footer .rule{height:1px;background:var(--steel);margin-bottom:20px}
+
+  /* reveal */
+  .rv{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
+  .rv.in{opacity:1;transform:none}
+
+  @media (max-width:780px){
+    .hero-grid{grid-template-columns:1fr;gap:36px}
+    .dial-stage{order:-1}
+    .paths{grid-template-columns:1fr}
+    .pick{grid-template-columns:1fr}
+    .pick .spec{grid-column:1;grid-row:auto;text-align:left;margin-top:4px}
+    .pick .note{grid-column:1}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .sweep-hand,.sub-hand{animation:none}
+    .rv{transition:none;opacity:1;transform:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">The Field Chronograph Ladder</span>
+      <h1>Everything under&nbsp;the <em>Hamilton</em>.</h1>
+      <p class="lede">The Khaki Field Auto Chrono is the summit. Below it the ground shifts — and somewhere on the way down, the tick stops being mechanical. Here's the whole climb.</p>
+      <div class="summit">
+        <span class="dot"></span>
+        <span class="txt">The one you want<b>Khaki Field Auto Chrono · H-21 · 60h</b></span>
+        <span class="price">£1,615</span>
+      </div>
+    </div>
+    <div class="dial-stage">
+      <svg class="dial" viewBox="0 0 400 400" role="img" aria-label="Two-register chronograph dial with a sweeping seconds hand">
+        <defs>
+          <radialGradient id="face" cx="42%" cy="36%" r="75%">
+            <stop offset="0%" stop-color="#23272F"/>
+            <stop offset="62%" stop-color="#15181D"/>
+            <stop offset="100%" stop-color="#0C0E12"/>
+          </radialGradient>
+          <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#4A515E"/>
+            <stop offset="50%" stop-color="#23262D"/>
+            <stop offset="100%" stop-color="#3A414D"/>
+          </linearGradient>
+        </defs>
+        <circle cx="200" cy="200" r="196" fill="url(#ring)"/>
+        <circle cx="200" cy="200" r="184" fill="url(#face)"/>
+        <!-- minute track -->
+        <g id="ticks"></g>
+        <!-- sub registers -->
+        <g>
+          <circle cx="130" cy="200" r="46" fill="#101317" stroke="#333a44" stroke-width="1.5"/>
+          <g class="sub-hand"><line x1="130" y1="200" x2="130" y2="166" stroke="#C9A96B" stroke-width="2.4" stroke-linecap="round"/></g>
+          <circle cx="130" cy="200" r="3.2" fill="#C9A96B"/>
+          <circle cx="270" cy="200" r="46" fill="#101317" stroke="#333a44" stroke-width="1.5"/>
+          <line x1="270" y1="200" x2="270" y2="170" stroke="#8AA6B4" stroke-width="2.4" stroke-linecap="round" transform="rotate(120 270 200)"/>
+          <circle cx="270" cy="200" r="3.2" fill="#8AA6B4"/>
+        </g>
+        <!-- brand-ish text -->
+        <text x="200" y="120" text-anchor="middle" fill="#9aa0ab" font-family="Saira Condensed,sans-serif" font-size="15" letter-spacing="3" font-weight="600">CHRONOGRAPH</text>
+        <text x="200" y="300" text-anchor="middle" fill="#6e7480" font-family="Space Mono,monospace" font-size="11" letter-spacing="2">COLUMN&#8201;WHEEL</text>
+        <!-- centre + sweep -->
+        <g class="sweep-hand">
+          <line x1="200" y1="214" x2="200" y2="44" stroke="#E04A2B" stroke-width="2.6" stroke-linecap="round"/>
+          <circle cx="200" cy="200" r="6.5" fill="#E04A2B"/>
+        </g>
+        <circle cx="200" cy="200" r="2.4" fill="#15181D"/>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<section class="wrap ladder-head">
+  <span class="eyebrow">How to read the climb</span>
+  <h2>Two boundaries, not one smooth slope.</h2>
+  <p>Price falls top to bottom. Colour tells you what's actually keeping time — because a mechanical chronograph is costly to build, and that cost is the whole story of this ladder.</p>
+  <div class="key">
+    <span><i class="m"></i>Mechanical — wound, sprung, sweeping</span>
+    <span><i class="q"></i>Quartz · meca-quartz · solar</span>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="ladder">
+
+    <!-- PEER -->
+    <section class="tier mech rv">
+      <div class="tier-top">
+        <span class="tier-price">£1,300–1,615</span>
+        <span class="chip">Mechanical · 7750 family</span>
+      </div>
+      <div class="tier-name">Near-peers — same money, same movement stable</div>
+      <div class="picks">
+        <div class="pick">
+          <span class="nm">Tissot PRS 516 Automatic Chrono</span>
+          <span class="spec"><b>Valjoux A05</b><br>68h · auto</span>
+          <span class="note">The obvious sibling — same Swatch Group movement lineage as the Hamilton. New examples have crept to £1,600–1,925, so think peer, not bargain; older PRS 516 autos sit £1,000–1,300 used.</span>
+        </div>
+        <div class="pick">
+          <span class="nm">Christopher Ward C65 Chronograph “Wild Thing”</span>
+          <span class="spec"><b>Sellita SW510</b><br>~£1,000–1,400</span>
+          <span class="note">British, and a brand you already rate. Discontinued, so secondary only — but a column of value at this money.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- AUTOS -->
+    <section class="tier mech rv">
+      <div class="tier-top">
+        <span class="tier-price">£900–1,300</span>
+        <span class="chip">Mechanical · automatic</span>
+      </div>
+      <div class="tier-name">Automatics, closing in</div>
+      <div class="picks">
+        <div class="pick">
+          <span class="nm">Farer mechanical chronograph</span>
+          <span class="spec"><b>Sellita</b><br>~£1,250</span>
+          <span class="note">British design language, properly distinctive dials. Your kind of brand if you want to step sideways from the field look.</span>
+        </div>
+        <div class="pick">
+          <span class="nm">Yema Speedgraf / Flygraf</span>
+          <span class="spec"><b>Valjoux-based</b><br>~£990+</span>
+          <span class="note">French military DNA, automatic chrono at the bottom of the four-figure band.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- THRESHOLD MECH START -->
+    <section class="tier mech rv">
+      <div class="tier-top">
+        <span class="tier-price">£500–700</span>
+        <span class="chip">Mechanical · column wheel</span>
+      </div>
+      <div class="tier-name">Where mechanical actually arrives</div>
+      <div class="picks">
+        <div class="pick">
+          <span class="nm">Baltic Bicompax 002</span>
+          <span class="spec"><b>Seagull ST1901</b><br>38mm · 42h · hand-wound</span>
+          <span class="note">The value story of the whole ladder: a column-wheel <em>mechanical</em> chrono for well under the Hamilton. Pulled from catalogue April 2025, so secondary only now (~£500–660).<span class="flag">Discontinued — used market</span></span>
+        </div>
+        <div class="pick">
+          <span class="nm">Seagull 1963 / Sugess reissue</span>
+          <span class="spec"><b>ST19 family</b><br>~£200–400</span>
+          <span class="note">Same movement, far cheaper, rougher finishing and variable QC. The most affordable way to own a real column-wheel chronograph.</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="threshold rv">
+      <span class="line" aria-hidden="true"></span>
+      <span class="label">Below here, the tick is quartz
+        <span class="sub">Nothing between this line and the Tissot keeps mechanical time. Everything under it is a chronograph wearing the clothes.</span>
+      </span>
+    </div>
+
+    <!-- SWEET SPOT -->
+    <section class="tier quartz rv">
+      <div class="tier-top">
+        <span class="tier-price">£300–450</span>
+        <span class="chip">Solar · meca-quartz</span>
+      </div>
+      <div class="tier-name">The sweet spot</div>
+      <div class="picks">
+        <div class="pick">
+          <span class="nm">Seiko Prospex Speedtimer Solar Chronograph</span>
+          <span class="spec"><b>Solar V192</b><br>39mm · from £429</span>
+          <span class="note">The strongest brand-name pick in the band. Solar, so set-and-forget, and the 1960s Speedtimer lines are the real thing — not a homage.</span>
+        </div>
+        <div class="pick">
+          <span class="nm">Furlan Marri mono-pusher</span>
+          <span class="spec"><b>Meca-quartz</b><br>~£450–550</span>
+          <span class="note">Looks far above its money. Snappy mechanical pusher feel, quartz timing underneath.</span>
+        </div>
+        <div class="pick">
+          <span class="nm">Dan Henry 1964 / 1962</span>
+          <span class="spec"><b>Meca-quartz</b><br>~£270</span>
+          <span class="note">Vintage two-register racing chrono, real reset snap. Yema Rallygraf (~£350) sits alongside if you want the French route.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- FLOOR -->
+    <section class="tier quartz rv">
+      <div class="tier-top">
+        <span class="tier-price">£100–250</span>
+        <span class="chip">Quartz</span>
+      </div>
+      <div class="tier-name">The floor — true field-chrono look, cheap</div>
+      <div class="picks">
+        <div class="pick">
+          <span class="nm">Citizen Eco-Drive Chronograph</span>
+          <span class="spec"><b>Solar quartz</b><br>~£150–250</span>
+          <span class="note">Solar, legible, never needs a battery. The grown-up budget answer.</span>
+        </div>
+        <div class="pick">
+          <span class="nm">Timex Expedition / Standard Chrono</span>
+          <span class="spec"><b>Quartz</b><br>~£100–130</span>
+          <span class="note">The only true field-<em>chronograph</em> look this cheap. Honest about what it is.</span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<section class="wrap read">
+  <span class="eyebrow">The honest read</span>
+  <h2>Two paths. Pick the one that's actually the itch.</h2>
+  <div class="paths">
+    <div class="path mech rv">
+      <h3>If it's the mechanism</h3>
+      <p>The pull is a chronograph you wind and watch sweep through the caseback. Then there's no shortcut: take the Seagull route under £700, or save for the Tissot at peer money. The middle is a mirage.</p>
+      <p class="out">Stop at <b>Baltic Bicompax 002</b> — or hold for the Hamilton itself.</p>
+    </div>
+    <div class="path look rv">
+      <h3>If it's the look</h3>
+      <p>The pull is the field-chrono face on the wrist, and you don't care what's behind the dial. Then the rational stop is obvious and it's a third of the price.</p>
+      <p class="out">Stop at <b>Seiko Speedtimer Solar</b>, £429, and don't look up.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">
+  <div class="rule"></div>
+  Prices indicative, UK, June 2026 · movements as specified by maker · secondary-market figures where noted
+</footer>
+
+<script>
+  // minute-track ticks for the hero dial
+  (function(){
+    var g=document.getElementById('ticks');
+    if(!g)return;
+    var ns='http://www.w3.org/2000/svg';
+    for(var i=0;i<60;i++){
+      var major=(i%5===0);
+      var a=(i/60)*Math.PI*2 - Math.PI/2;
+      var r1=172, r2=major?156:164;
+      var l=document.createElementNS(ns,'line');
+      l.setAttribute('x1',(200+Math.cos(a)*r1).toFixed(1));
+      l.setAttribute('y1',(200+Math.sin(a)*r1).toFixed(1));
+      l.setAttribute('x2',(200+Math.cos(a)*r2).toFixed(1));
+      l.setAttribute('y2',(200+Math.sin(a)*r2).toFixed(1));
+      l.setAttribute('stroke',major?'#C9A96B':'#454C59');
+      l.setAttribute('stroke-width',major?'2.2':'1');
+      l.setAttribute('stroke-linecap','round');
+      g.appendChild(l);
+    }
+  })();
+
+  // scroll reveal
+  (function(){
+    var els=document.querySelectorAll('.rv');
+    if(!('IntersectionObserver'in window)){els.forEach(function(e){e.classList.add('in')});return;}
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+    },{threshold:.14});
+    els.forEach(function(e){io.observe(e);});
+  })();
+</script>
+
+</body>
+</html>
