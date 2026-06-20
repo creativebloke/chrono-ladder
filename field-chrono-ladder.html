@@ -163,38 +163,30 @@
   }
   .threshold .sub{display:block;font-family:var(--font-display);text-transform:none;letter-spacing:0;color:var(--mute);font-size:.86rem;font-weight:400;margin-top:4px;max-width:54ch}
 
-  /* ---------- SIZE COMPARISON ---------- */
+  /* ---------- SIZE COMPARISON (to scale) ---------- */
   .sizes-sec{padding:66px 0 14px;border-top:1px solid var(--steel)}
   .sizes-sec h2{font-weight:900;font-size:clamp(1.7rem,3.6vw,2.5rem);letter-spacing:-.01em;margin:14px 0 14px}
   .sizes-sec .intro{color:var(--mute);max-width:64ch}
-  .sizes-chart{margin-top:32px}
-  .sizes-axis,.sizes-row{display:grid;grid-template-columns:minmax(116px,184px) 1fr 40px;align-items:center;column-gap:14px}
-  .sizes-axis{height:22px;margin-bottom:8px}
-  .sizes-axis .ticks{position:relative;height:100%}
-  .sizes-axis .ticks span{position:absolute;top:2px;transform:translateX(-50%);font-family:var(--font-data);font-size:.66rem;color:var(--mute)}
-  .sizes-axis .ticks span.ultra{color:var(--red)}
-  .sizes-row{height:34px}
-  .sizes-row .nm2{font-family:var(--font-label);text-transform:uppercase;letter-spacing:.05em;font-size:.74rem;color:var(--lume);text-align:right;line-height:1.12}
-  .sizes-row .track{position:relative;height:100%}
-  .sizes-row .lane{position:absolute;left:0;right:0;top:50%;height:1px;transform:translateY(-50%);background:var(--steel)}
-  .sizes-row .ref{position:absolute;top:-3px;bottom:-3px;left:92.857%;border-left:1px dashed var(--red);opacity:.5}
-  .sizes-row .dot{position:absolute;top:50%;width:12px;height:12px;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 8px rgba(0,0,0,.4)}
-  .sizes-row .mm{font-family:var(--font-data);font-size:.82rem;color:var(--mute);text-align:left}
-  .sizes-row.mech .dot{background:var(--gold)}
-  .sizes-row.mech .mm{color:var(--gold)}
-  .sizes-row.quartz .dot{background:var(--cool)}
-  .sizes-row.quartz .mm{color:var(--cool)}
-  .sizes-row.apple .dot{background:var(--red)}
-  .sizes-row.apple .mm{color:var(--red)}
-  .sizes-row.apple{background:linear-gradient(90deg,rgba(224,74,43,.12),transparent 80%)}
-  .sizes-row.summit{background:linear-gradient(90deg,rgba(201,169,107,.12),transparent 80%)}
-  .sizes-row.summit .dot{box-shadow:0 0 0 3px rgba(201,169,107,.35),0 0 8px rgba(0,0,0,.4)}
-  .sizes-key{display:flex;gap:22px;flex-wrap:wrap;margin-top:24px}
+  .sizes-real{display:flex;flex-wrap:wrap;gap:30px 26px;margin-top:40px;--mmpx:5px}
+  .sizes-real .sw{flex:none}
+  .sizes-real .cell{position:relative;display:flex;align-items:center;justify-content:center;width:calc(49*var(--mmpx));height:calc(49*var(--mmpx))}
+  .sizes-real .ref{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:calc(44*var(--mmpx));height:calc(49*var(--mmpx));border:1px dashed var(--red);border-radius:26%;opacity:.45}
+  .sizes-real .ring{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:calc(var(--d)*var(--mmpx));height:calc(var(--d)*var(--mmpx));border-radius:50%;border:2px solid var(--steel-bright)}
+  .sizes-real .sw.mech .ring{border-color:var(--gold)}
+  .sizes-real .sw.quartz .ring{border-color:var(--cool)}
+  .sizes-real .sw.peak .ring{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,169,107,.22)}
+  .sizes-real .lab{position:relative;z-index:2;text-align:center;font-family:var(--font-label);text-transform:uppercase;letter-spacing:.04em;font-size:.66rem;line-height:1.2;color:var(--lume);max-width:calc(var(--d,44)*var(--mmpx) - 14px)}
+  .sizes-real .lab b{display:block;font-family:var(--font-data);font-size:.82rem;font-weight:700;margin-top:3px;color:var(--mute)}
+  .sizes-real .sw.mech .lab b{color:var(--gold)}
+  .sizes-real .sw.quartz .lab b{color:var(--cool)}
+  .sizes-real .sw.apple .ref{border-style:solid;border-width:2px;opacity:1}
+  .sizes-real .sw.apple .lab b{color:var(--red)}
+  .sizes-key{display:flex;gap:22px;flex-wrap:wrap;margin-top:30px}
   .sizes-key span{font-family:var(--font-label);text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;color:var(--mute);display:flex;align-items:center;gap:9px}
   .sizes-key i{width:13px;height:13px;border-radius:50%;display:inline-block;flex:none}
   .sizes-key .m{background:var(--gold)}
   .sizes-key .q{background:var(--cool)}
-  .sizes-key .a{background:var(--red)}
+  .sizes-key .a{background:var(--red);border-radius:3px}
 
   /* ---------- READ ---------- */
   .read{padding:78px 0 96px;border-top:1px solid var(--steel);margin-top:40px}
@@ -227,9 +219,9 @@
     .pick .nm{grid-column:1;grid-row:auto}
     .pick .spec{grid-column:1;grid-row:auto;text-align:left;margin-top:4px}
     .pick .note{grid-column:1;grid-row:auto}
-    .sizes-axis,.sizes-row{grid-template-columns:90px 1fr 30px;column-gap:10px}
-    .sizes-row{height:auto;min-height:38px;padding:5px 0}
-    .sizes-row .nm2{font-size:.64rem;line-height:1.15}
+    .sizes-real{--mmpx:3px;gap:20px 12px}
+    .sizes-real .lab{font-size:.56rem}
+    .sizes-real .lab b{font-size:.72rem}
   }
   @media (prefers-reduced-motion:reduce){
     .sweep-hand,.sub-hand{animation:none}
@@ -441,93 +433,28 @@
 <section class="wrap sizes-sec">
   <span class="eyebrow">On the wrist</span>
   <h2>How they measure up.</h2>
-  <p class="intro">Case diameter, every pick on a single scale — measured against your Apple Watch Ultra (49&nbsp;mm) as the yardstick. The red line is the Ultra; almost the entire mechanical field sits well inside it.</p>
-  <div class="sizes-chart">
-    <div class="sizes-axis">
-      <span></span>
-      <span class="ticks">
-        <span style="left:14.286%">38</span>
-        <span style="left:28.571%">40</span>
-        <span style="left:42.857%">42</span>
-        <span style="left:57.143%">44</span>
-        <span style="left:71.429%">46</span>
-        <span style="left:92.857%" class="ultra">49</span>
-      </span>
-      <span></span>
-    </div>
-
-    <div class="sizes-row apple">
-      <span class="nm2">Apple Watch Ultra</span>
-      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:92.857%"></span></span>
-      <span class="mm">49</span>
-    </div>
-    <div class="sizes-row mech">
-      <span class="nm2">Tissot PRS 516</span>
-      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:64.286%"></span></span>
-      <span class="mm">45</span>
-    </div>
-    <div class="sizes-row mech summit">
-      <span class="nm2">Hamilton Khaki Field</span>
-      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:57.143%"></span></span>
-      <span class="mm">44</span>
-    </div>
-    <div class="sizes-row quartz">
-      <span class="nm2">Citizen Eco-Drive</span>
-      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:57.143%"></span></span>
-      <span class="mm">44</span>
-    </div>
-    <div class="sizes-row quartz">
-      <span class="nm2">Timex Expedition</span>
-      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:50%"></span></span>
-      <span class="mm">43</span>
-    </div>
-    <div class="sizes-row mech">
-      <span class="nm2">Christopher Ward C65</span>
-      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:35.714%"></span></span>
-      <span class="mm">41</span>
-    </div>
-    <div class="sizes-row mech">
-      <span class="nm2">Farer Chronograph</span>
-      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:21.429%"></span></span>
-      <span class="mm">39</span>
-    </div>
-    <div class="sizes-row mech">
-      <span class="nm2">Yema Speedgraf</span>
-      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:21.429%"></span></span>
-      <span class="mm">39</span>
-    </div>
-    <div class="sizes-row quartz">
-      <span class="nm2">Seiko Speedtimer</span>
-      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:21.429%"></span></span>
-      <span class="mm">39</span>
-    </div>
-    <div class="sizes-row mech">
-      <span class="nm2">Baltic Bicompax 002</span>
-      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:14.286%"></span></span>
-      <span class="mm">38</span>
-    </div>
-    <div class="sizes-row mech">
-      <span class="nm2">Seagull 1963</span>
-      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:14.286%"></span></span>
-      <span class="mm">38</span>
-    </div>
-    <div class="sizes-row quartz">
-      <span class="nm2">Furlan Marri</span>
-      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:14.286%"></span></span>
-      <span class="mm">38</span>
-    </div>
-    <div class="sizes-row quartz">
-      <span class="nm2">Dan Henry 1964</span>
-      <span class="track"><span class="lane"></span><span class="ref"></span><span class="dot" style="left:14.286%"></span></span>
-      <span class="mm">38</span>
-    </div>
+  <p class="intro">Each watch as a true-to-scale circle — just the case size, nothing else — set inside your Apple Watch Ultra's outline (the red 44&nbsp;×&nbsp;49&nbsp;mm square) so you can see exactly how much smaller each one wears.</p>
+  <div class="sizes-real">
+    <figure class="sw apple"><span class="cell"><span class="ref"></span><span class="lab">Apple Watch Ultra<b>44×49</b></span></span></figure>
+    <figure class="sw mech" style="--d:45"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Tissot PRS 516<b>45mm</b></span></span></figure>
+    <figure class="sw mech peak" style="--d:44"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Hamilton Khaki Field<b>44mm</b></span></span></figure>
+    <figure class="sw quartz" style="--d:44"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Citizen Eco-Drive<b>44mm</b></span></span></figure>
+    <figure class="sw quartz" style="--d:43"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Timex Expedition<b>43mm</b></span></span></figure>
+    <figure class="sw mech" style="--d:41"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Christopher Ward C65<b>41mm</b></span></span></figure>
+    <figure class="sw mech" style="--d:39"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Farer Chronograph<b>39mm</b></span></span></figure>
+    <figure class="sw mech" style="--d:39"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Yema Speedgraf<b>39mm</b></span></span></figure>
+    <figure class="sw quartz" style="--d:39"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Seiko Speedtimer<b>39mm</b></span></span></figure>
+    <figure class="sw mech" style="--d:38"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Baltic Bicompax 002<b>38mm</b></span></span></figure>
+    <figure class="sw mech" style="--d:38"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Seagull 1963<b>38mm</b></span></span></figure>
+    <figure class="sw quartz" style="--d:38"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Furlan Marri<b>38mm</b></span></span></figure>
+    <figure class="sw quartz" style="--d:38"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Dan Henry 1964<b>38mm</b></span></span></figure>
   </div>
   <div class="sizes-key">
     <span><i class="m"></i>Mechanical</span>
     <span><i class="q"></i>Quartz · solar · meca-quartz</span>
-    <span><i class="a"></i>Apple Watch Ultra — your 49&nbsp;mm yardstick</span>
+    <span><i class="a"></i>Apple Watch Ultra (red) — repeated behind each as your reference</span>
   </div>
-  <p class="intro" style="margin-top:14px;font-size:.82rem">Figures are nominal case diameter (excluding crown). The Hamilton is highlighted in gold as the summit; the Apple Watch Ultra's 49&nbsp;mm is its case height.</p>
+  <p class="intro" style="margin-top:16px;font-size:.82rem">Outlines are to scale; figures are nominal case diameter (excluding crown). The red dashed shape is the Apple Watch Ultra (44&nbsp;×&nbsp;49&nbsp;mm) behind every watch; the Hamilton (gold) is the summit.</p>
 </section>
 
 <section class="wrap read">
