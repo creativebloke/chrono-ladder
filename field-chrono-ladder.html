@@ -134,12 +134,14 @@
   .tier-name{font-family:var(--font-label);text-transform:uppercase;letter-spacing:.1em;color:var(--mute);font-size:.86rem;font-weight:500;margin-bottom:22px}
 
   .picks{display:grid;gap:1px;background:var(--steel);border:1px solid var(--steel);border-radius:3px;overflow:hidden}
-  .pick{background:var(--panel);padding:18px 20px;display:grid;grid-template-columns:1fr auto;gap:6px 20px;align-items:start;transition:background .25s}
+  .pick{background:var(--panel);padding:18px 20px;display:grid;grid-template-columns:84px 1fr auto;gap:6px 18px;align-items:start;transition:background .25s}
   .pick:hover{background:var(--panel-2)}
-  .pick .nm{font-weight:700;font-size:1.04rem;letter-spacing:-.01em}
-  .pick .note{grid-column:1/2;color:#B4B2A8;font-size:.92rem;max-width:62ch}
+  .pick .thumb{grid-column:1;grid-row:1/3;width:84px;height:84px;border-radius:3px;overflow:hidden;border:1px solid var(--steel-bright);background:var(--panel-2)}
+  .pick .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .pick .nm{grid-column:2;grid-row:1;font-weight:700;font-size:1.04rem;letter-spacing:-.01em}
+  .pick .note{grid-column:2;grid-row:2;color:#B4B2A8;font-size:.92rem;max-width:62ch}
   .pick .spec{
-    grid-column:2;grid-row:1/3;text-align:right;
+    grid-column:3;grid-row:1/3;text-align:right;
     font-family:var(--font-data);font-size:.78rem;color:var(--mute);line-height:1.7;white-space:nowrap;
   }
   .pick .spec b{color:var(--lume);font-weight:700}
@@ -186,8 +188,10 @@
     .dial-stage{order:-1}
     .paths{grid-template-columns:1fr}
     .pick{grid-template-columns:1fr}
+    .pick .thumb{grid-column:1;grid-row:auto}
+    .pick .nm{grid-column:1;grid-row:auto}
     .pick .spec{grid-column:1;grid-row:auto;text-align:left;margin-top:4px}
-    .pick .note{grid-column:1}
+    .pick .note{grid-column:1;grid-row:auto}
   }
   @media (prefers-reduced-motion:reduce){
     .sweep-hand,.sub-hand{animation:none}
@@ -273,11 +277,13 @@
       <div class="tier-name">Near-peers — same money, same movement stable</div>
       <div class="picks">
         <div class="pick">
+          <span class="thumb"><img src="images/tissot-prs516.jpg" alt="Tissot PRS 516 Automatic Chronograph, black dial on steel bracelet" loading="lazy"></span>
           <span class="nm">Tissot PRS 516 Automatic Chrono</span>
           <span class="spec"><b>Valjoux A05</b><br>68h · auto</span>
           <span class="note">The obvious sibling — same Swatch Group movement lineage as the Hamilton. New examples have crept to £1,600–1,925, so think peer, not bargain; older PRS 516 autos sit £1,000–1,300 used.</span>
         </div>
         <div class="pick">
+          <span class="thumb"><img src="images/christopher-ward-c65.jpg" alt="Christopher Ward C65 Chronograph, blue dial" loading="lazy"></span>
           <span class="nm">Christopher Ward C65 Chronograph “Wild Thing”</span>
           <span class="spec"><b>Sellita SW510</b><br>~£1,000–1,400</span>
           <span class="note">British, and a brand you already rate. Discontinued, so secondary only — but a column of value at this money.</span>
@@ -294,11 +300,13 @@
       <div class="tier-name">Automatics, closing in</div>
       <div class="picks">
         <div class="pick">
+          <span class="thumb"><img src="images/farer-chronograph.jpg" alt="Farer automatic chronograph with navy dial" loading="lazy"></span>
           <span class="nm">Farer mechanical chronograph</span>
           <span class="spec"><b>Sellita</b><br>~£1,250</span>
           <span class="note">British design language, properly distinctive dials. Your kind of brand if you want to step sideways from the field look.</span>
         </div>
         <div class="pick">
+          <span class="thumb"><img src="images/yema-speedgraf.jpg" alt="Yema Speedgraf automatic chronograph, black dial" loading="lazy"></span>
           <span class="nm">Yema Speedgraf / Flygraf</span>
           <span class="spec"><b>Valjoux-based</b><br>~£990+</span>
           <span class="note">French military DNA, automatic chrono at the bottom of the four-figure band.</span>
@@ -315,11 +323,13 @@
       <div class="tier-name">Where mechanical actually arrives</div>
       <div class="picks">
         <div class="pick">
+          <span class="thumb"><img src="images/baltic-bicompax-002.jpg" alt="Baltic Bicompax 002 chronograph, black dial" loading="lazy"></span>
           <span class="nm">Baltic Bicompax 002</span>
           <span class="spec"><b>Seagull ST1901</b><br>38mm · 42h · hand-wound</span>
           <span class="note">The value story of the whole ladder: a column-wheel <em>mechanical</em> chrono for well under the Hamilton. Pulled from catalogue April 2025, so secondary only now (~£500–660).<span class="flag">Discontinued — used market</span></span>
         </div>
         <div class="pick">
+          <span class="thumb"><img src="images/seagull-1963.jpg" alt="Seagull 1963 reissue chronograph, cream dial with blue hands" loading="lazy"></span>
           <span class="nm">Seagull 1963 / Sugess reissue</span>
           <span class="spec"><b>ST19 family</b><br>~£200–400</span>
           <span class="note">Same movement, far cheaper, rougher finishing and variable QC. The most affordable way to own a real column-wheel chronograph.</span>
@@ -343,16 +353,19 @@
       <div class="tier-name">The sweet spot</div>
       <div class="picks">
         <div class="pick">
+          <span class="thumb"><img src="images/seiko-speedtimer-ssc813.jpg" alt="Seiko Prospex Speedtimer Solar Chronograph SSC813, panda dial" loading="lazy"></span>
           <span class="nm">Seiko Prospex Speedtimer Solar Chronograph</span>
           <span class="spec"><b>Solar V192</b><br>39mm · from £429</span>
           <span class="note">The strongest brand-name pick in the band. Solar, so set-and-forget, and the 1960s Speedtimer lines are the real thing — not a homage.</span>
         </div>
         <div class="pick">
+          <span class="thumb"><img src="images/furlan-marri.jpg" alt="Furlan Marri meca-quartz mono-pusher chronograph, salmon dial" loading="lazy"></span>
           <span class="nm">Furlan Marri mono-pusher</span>
           <span class="spec"><b>Meca-quartz</b><br>~£450–550</span>
           <span class="note">Looks far above its money. Snappy mechanical pusher feel, quartz timing underneath.</span>
         </div>
         <div class="pick">
+          <span class="thumb"><img src="images/dan-henry-1964.jpg" alt="Dan Henry 1964 Gran Turismo Chronograph, white panda dial" loading="lazy"></span>
           <span class="nm">Dan Henry 1964 / 1962</span>
           <span class="spec"><b>Meca-quartz</b><br>~£270</span>
           <span class="note">Vintage two-register racing chrono, real reset snap. Yema Rallygraf (~£350) sits alongside if you want the French route.</span>
@@ -369,11 +382,13 @@
       <div class="tier-name">The floor — true field-chrono look, cheap</div>
       <div class="picks">
         <div class="pick">
+          <span class="thumb"><img src="images/citizen-ecodrive-chrono.jpg" alt="Citizen Eco-Drive Chronograph, green dial" loading="lazy"></span>
           <span class="nm">Citizen Eco-Drive Chronograph</span>
           <span class="spec"><b>Solar quartz</b><br>~£150–250</span>
           <span class="note">Solar, legible, never needs a battery. The grown-up budget answer.</span>
         </div>
         <div class="pick">
+          <span class="thumb"><img src="images/timex-expedition.jpg" alt="Timex Expedition Field Chronograph, black dial with orange markers" loading="lazy"></span>
           <span class="nm">Timex Expedition / Standard Chrono</span>
           <span class="spec"><b>Quartz</b><br>~£100–130</span>
           <span class="note">The only true field-<em>chronograph</em> look this cheap. Honest about what it is.</span>
