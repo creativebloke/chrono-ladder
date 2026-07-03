@@ -49,6 +49,14 @@
     color:var(--mute);
   }
 
+  /* ---------- NAV ---------- */
+  .nav{border-bottom:1px solid var(--steel)}
+  .nav .wrap{display:flex;gap:26px;align-items:center;padding-top:15px;padding-bottom:15px}
+  .nav a{font-family:var(--font-label);text-transform:uppercase;letter-spacing:.14em;font-size:.74rem;color:var(--mute);text-decoration:none;transition:color .2s}
+  .nav a:hover{color:var(--lume)}
+  .nav a.active{color:var(--lume)}
+  .nav a.active::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--red);margin-right:9px;vertical-align:middle;box-shadow:0 0 10px var(--red)}
+
   /* ---------- HERO ---------- */
   .hero{
     position:relative;
@@ -231,6 +239,13 @@
 </style>
 </head>
 <body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="field-chrono-ladder.html" class="active">The Field Chronograph Ladder</a>
+    <a href="apple-health-step-trackers.html">Apple Health Step-Trackers</a>
+  </div>
+</nav>
 
 <header class="hero">
   <div class="wrap hero-grid">

@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Under the Ultra — Step-Trackers that Sync to Apple Health</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;900&family=Saira+Condensed:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0F1115;
+    --panel:#171A20;
+    --panel-2:#1E222A;
+    --steel:#2B313B;
+    --steel-bright:#454C59;
+    --lume:#E9E3D3;
+    --mute:#8A909B;
+    --gold:#C9A96B;
+    --gold-dim:#6E5E3C;
+    --cool:#8AA6B4;
+    --cool-dim:#4C5E68;
+    --red:#E04A2B;
+    --green:#6FBF8E;
+    --font-display:'Archivo',system-ui,sans-serif;
+    --font-label:'Saira Condensed',sans-serif;
+    --font-data:'Space Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--ink);
+    color:var(--lume);
+    font-family:var(--font-display);
+    font-weight:400;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--red);color:#fff}
+
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+
+  .eyebrow{
+    font-family:var(--font-label);
+    text-transform:uppercase;
+    letter-spacing:.34em;
+    font-weight:600;
+    font-size:.72rem;
+    color:var(--mute);
+  }
+
+  /* ---------- NAV ---------- */
+  .nav{border-bottom:1px solid var(--steel)}
+  .nav .wrap{display:flex;gap:26px;align-items:center;padding-top:15px;padding-bottom:15px}
+  .nav a{font-family:var(--font-label);text-transform:uppercase;letter-spacing:.14em;font-size:.74rem;color:var(--mute);text-decoration:none;transition:color .2s}
+  .nav a:hover{color:var(--lume)}
+  .nav a.active{color:var(--lume)}
+  .nav a.active::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--red);margin-right:9px;vertical-align:middle;box-shadow:0 0 10px var(--red)}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    padding:72px 0 48px;
+    background:
+      radial-gradient(120% 90% at 78% 18%, rgba(224,74,43,.10), transparent 55%),
+      radial-gradient(80% 60% at 12% 0%, rgba(138,166,180,.07), transparent 60%);
+    border-bottom:1px solid var(--steel);
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    gap:48px;
+    align-items:center;
+  }
+  .hero h1{
+    font-weight:900;
+    font-size:clamp(2.6rem,6.4vw,4.6rem);
+    line-height:.98;
+    letter-spacing:-.02em;
+    margin:18px 0 22px;
+  }
+  .hero h1 em{font-style:normal;color:var(--red)}
+  .hero .lede{
+    font-size:1.06rem;
+    color:#C7C5BC;
+    max-width:40ch;
+    margin-bottom:30px;
+  }
+  .summit{
+    display:inline-flex;
+    align-items:center;
+    gap:14px;
+    padding:13px 18px;
+    border:1px solid var(--steel-bright);
+    border-radius:2px;
+    background:linear-gradient(180deg,rgba(224,74,43,.08),transparent);
+  }
+  .summit .dot{width:9px;height:9px;border-radius:50%;background:var(--red);box-shadow:0 0 12px var(--red);flex:none}
+  .summit .txt{font-family:var(--font-label);text-transform:uppercase;letter-spacing:.12em;font-size:.78rem;color:var(--mute);line-height:1.3}
+  .summit .txt b{display:block;color:var(--lume);font-weight:600;letter-spacing:.06em;font-size:.92rem}
+  .summit .price{font-family:var(--font-data);font-weight:700;font-size:1.05rem;color:var(--red);margin-left:6px}
+  .summit .summit-thumb{width:52px;height:52px;border-radius:3px;overflow:hidden;border:1px solid var(--steel-bright);flex:none}
+  .summit .summit-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+
+  /* ---------- HERO RINGS (svg) ---------- */
+  .dial-stage{display:flex;justify-content:center}
+  .dial{width:min(360px,82vw);height:auto;filter:drop-shadow(0 24px 50px rgba(0,0,0,.55))}
+  .rg{fill:none;stroke-linecap:round;transform:rotate(-90deg);transform-origin:200px 200px}
+  .rg.move{stroke:var(--red);stroke-dasharray:942.48;stroke-dashoffset:169.6;animation:rgMove 1.6s ease forwards}
+  .rg.ex{stroke:var(--green);stroke-dasharray:728.85;stroke-dashoffset:255.1;animation:rgEx 1.6s .15s ease backwards}
+  .rg.stand{stroke:var(--cool);stroke-dasharray:515.22;stroke-dashoffset:216.4;animation:rgStand 1.6s .3s ease backwards}
+  @keyframes rgMove{from{stroke-dashoffset:942.48}to{stroke-dashoffset:169.6}}
+  @keyframes rgEx{from{stroke-dashoffset:728.85}to{stroke-dashoffset:255.1}}
+  @keyframes rgStand{from{stroke-dashoffset:515.22}to{stroke-dashoffset:216.4}}
+
+  /* ---------- LADDER ---------- */
+  .ladder-head{padding:70px 0 34px;border-bottom:1px solid var(--steel)}
+  .ladder-head h2{font-weight:900;font-size:clamp(1.7rem,3.6vw,2.5rem);letter-spacing:-.01em;margin:14px 0 14px}
+  .ladder-head p{color:var(--mute);max-width:64ch}
+  .ladder-head .key{display:flex;gap:24px;flex-wrap:wrap;margin-top:22px}
+  .key span{font-family:var(--font-label);text-transform:uppercase;letter-spacing:.14em;font-size:.74rem;color:var(--mute);display:flex;align-items:center;gap:9px}
+  .key i{width:22px;height:3px;display:inline-block}
+  .key .m{background:var(--gold)}
+  .key .q{background:var(--cool)}
+
+  .ladder{position:relative;padding:18px 0 10px;margin-left:6px;border-left:1.5px solid var(--steel)}
+
+  .tier{position:relative;padding:42px 0 42px 40px}
+  .tier::before{
+    content:"";position:absolute;left:-7.5px;top:54px;
+    width:13px;height:13px;border-radius:50%;
+    background:var(--ink);border:2px solid var(--cool);
+  }
+  .tier.mech::before{border-color:var(--gold)}
+
+  .tier-top{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:6px}
+  .tier-price{font-family:var(--font-data);font-weight:700;font-size:clamp(1.5rem,3.4vw,2.1rem);letter-spacing:-.02em}
+  .tier.mech .tier-price{color:var(--gold)}
+  .tier.quartz .tier-price{color:var(--cool)}
+  .chip{
+    font-family:var(--font-label);text-transform:uppercase;letter-spacing:.16em;
+    font-size:.66rem;font-weight:600;padding:5px 10px;border-radius:2px;
+    border:1px solid var(--steel-bright);color:var(--mute);white-space:nowrap;
+  }
+  .tier.mech .chip{color:var(--gold);border-color:var(--gold-dim)}
+  .tier.quartz .chip{color:var(--cool);border-color:var(--cool-dim)}
+  .tier-name{font-family:var(--font-label);text-transform:uppercase;letter-spacing:.1em;color:var(--mute);font-size:.86rem;font-weight:500;margin-bottom:22px}
+
+  .picks{display:grid;gap:1px;background:var(--steel);border:1px solid var(--steel);border-radius:3px;overflow:hidden}
+  .pick{background:var(--panel);padding:18px 20px;display:grid;grid-template-columns:84px 1fr auto;gap:6px 18px;align-items:start;transition:background .25s}
+  .pick:hover{background:var(--panel-2)}
+  .pick .thumb{grid-column:1;grid-row:1/3;width:84px;height:84px;border-radius:3px;overflow:hidden;border:1px solid var(--steel-bright);background:var(--panel-2)}
+  .pick .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .pick .thumb img.op-r{object-position:74% 50%}
+  .pick .nm{grid-column:2;grid-row:1;font-weight:700;font-size:1.04rem;letter-spacing:-.01em}
+  .pick .note{grid-column:2;grid-row:2;color:#B4B2A8;font-size:.92rem;max-width:62ch}
+  .pick .spec{
+    grid-column:3;grid-row:1/3;text-align:right;
+    font-family:var(--font-data);font-size:.78rem;color:var(--mute);line-height:1.7;white-space:nowrap;
+  }
+  .pick .spec b{color:var(--lume);font-weight:700}
+  .flag{display:inline-block;margin-top:8px;font-family:var(--font-label);text-transform:uppercase;letter-spacing:.12em;font-size:.66rem;color:var(--red)}
+
+  /* ---------- THRESHOLD ---------- */
+  .threshold{position:relative;margin:8px 0;padding:26px 0 26px 40px}
+  .threshold .line{
+    position:absolute;left:-40px;right:0;top:50%;height:1px;
+    background:linear-gradient(90deg,var(--red),rgba(224,74,43,0) 92%);
+    box-shadow:0 0 18px rgba(224,74,43,.5);
+  }
+  .threshold .label{
+    position:relative;display:inline-block;background:var(--ink);padding-right:16px;
+    font-family:var(--font-label);text-transform:uppercase;letter-spacing:.2em;font-weight:600;
+    font-size:.78rem;color:var(--red);
+  }
+  .threshold .sub{display:block;font-family:var(--font-display);text-transform:none;letter-spacing:0;color:var(--mute);font-size:.86rem;font-weight:400;margin-top:4px;max-width:58ch}
+
+  /* ---------- SIZE COMPARISON (to scale) ---------- */
+  .sizes-sec{padding:66px 0 14px;border-top:1px solid var(--steel)}
+  .sizes-sec h2{font-weight:900;font-size:clamp(1.7rem,3.6vw,2.5rem);letter-spacing:-.01em;margin:14px 0 14px}
+  .sizes-sec .intro{color:var(--mute);max-width:66ch}
+  .sizes-real{display:flex;flex-wrap:wrap;gap:30px 26px;margin-top:40px;--mmpx:4px}
+  .sizes-real .sw{flex:none}
+  .sizes-real .cell{position:relative;display:flex;align-items:center;justify-content:center;width:calc(66*var(--mmpx));height:calc(66*var(--mmpx))}
+  .sizes-real .ref{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:calc(44*var(--mmpx));height:calc(49*var(--mmpx));border:1px dashed var(--red);border-radius:26%;opacity:.45}
+  .sizes-real .ring,.sizes-real .box{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border:2px solid var(--steel-bright)}
+  .sizes-real .ring{width:calc(var(--d)*var(--mmpx));height:calc(var(--d)*var(--mmpx));border-radius:50%}
+  .sizes-real .box{width:calc(var(--w)*var(--mmpx));height:calc(var(--h)*var(--mmpx));border-radius:24%}
+  .sizes-real .sw.mech .ring,.sizes-real .sw.mech .box{border-color:var(--gold)}
+  .sizes-real .sw.quartz .ring,.sizes-real .sw.quartz .box{border-color:var(--cool)}
+  .sizes-real .lab{position:relative;z-index:2;text-align:center;font-family:var(--font-label);text-transform:uppercase;letter-spacing:.04em;font-size:.64rem;line-height:1.2;color:var(--lume);max-width:calc(var(--d,var(--w,44))*var(--mmpx) - 12px)}
+  .sizes-real .lab b{display:block;font-family:var(--font-data);font-size:.8rem;font-weight:700;margin-top:3px;color:var(--mute)}
+  .sizes-real .sw.mech .lab b{color:var(--gold)}
+  .sizes-real .sw.quartz .lab b{color:var(--cool)}
+  .sizes-real .sw.apple .ref{border-style:solid;border-width:2px;opacity:1}
+  .sizes-real .sw.apple .lab b{color:var(--red)}
+  .sizes-key{display:flex;gap:22px;flex-wrap:wrap;margin-top:30px}
+  .sizes-key span{font-family:var(--font-label);text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;color:var(--mute);display:flex;align-items:center;gap:9px}
+  .sizes-key i{width:13px;height:13px;border-radius:50%;display:inline-block;flex:none}
+  .sizes-key .m{background:var(--gold)}
+  .sizes-key .q{background:var(--cool)}
+  .sizes-key .a{background:var(--red);border-radius:3px}
+
+  /* ---------- READ ---------- */
+  .read{padding:78px 0 96px;border-top:1px solid var(--steel);margin-top:40px}
+  .read h2{font-weight:900;font-size:clamp(1.7rem,3.6vw,2.5rem);letter-spacing:-.01em;margin:14px 0 30px}
+  .paths{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .path{padding:26px 24px;border:1px solid var(--steel);border-radius:3px;background:var(--panel)}
+  .path.mech{border-top:3px solid var(--gold)}
+  .path.look{border-top:3px solid var(--cool)}
+  .path h3{font-family:var(--font-label);text-transform:uppercase;letter-spacing:.14em;font-size:.92rem;margin-bottom:12px}
+  .path.mech h3{color:var(--gold)}
+  .path.look h3{color:var(--cool)}
+  .path p{color:#BBB9AF;font-size:.98rem}
+  .path .out{margin-top:16px;font-family:var(--font-data);font-size:.84rem;color:var(--lume)}
+  .path .out b{color:var(--gold)}
+  .path.look .out b{color:var(--cool)}
+
+  footer{padding:30px 0 60px;color:var(--mute);font-size:.8rem;font-family:var(--font-data)}
+  footer .rule{height:1px;background:var(--steel);margin-bottom:20px}
+  footer a{color:var(--cool);text-decoration:none}
+  footer a:hover{color:var(--lume)}
+
+  /* reveal */
+  .rv{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
+  .rv.in{opacity:1;transform:none}
+
+  @media (max-width:780px){
+    .hero-grid{grid-template-columns:1fr;gap:36px}
+    .dial-stage{order:-1}
+    .paths{grid-template-columns:1fr}
+    .pick{grid-template-columns:1fr}
+    .pick .thumb{grid-column:1;grid-row:auto}
+    .pick .nm{grid-column:1;grid-row:auto}
+    .pick .spec{grid-column:1;grid-row:auto;text-align:left;margin-top:4px}
+    .pick .note{grid-column:1;grid-row:auto}
+    .sizes-real{--mmpx:2.6px;gap:20px 12px}
+    .sizes-real .lab{font-size:.54rem}
+    .sizes-real .lab b{font-size:.7rem}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .rg{animation:none!important}
+    .rv{transition:none;opacity:1;transform:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="field-chrono-ladder.html">The Field Chronograph Ladder</a>
+    <a href="apple-health-step-trackers.html" class="active">Apple Health Step-Trackers</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Step-Trackers that Sync to Apple Health</span>
+      <h1>Everything under&nbsp;the <em>Ultra</em>.</h1>
+      <p class="lede">Your Apple Watch Ultra closes every ring. But if you want a second watch under £700 that still feeds Apple Health — analog, digital, rugged or runner — here's the whole field. Fitbit and Samsung sit it out.</p>
+      <div class="summit">
+        <span class="summit-thumb"><img src="images-health/apple-watch-ultra.jpg" alt="Apple Watch Ultra, titanium"></span>
+        <span class="dot"></span>
+        <span class="txt">The one on your wrist<b>Apple Watch Ultra · 49mm · closes the rings</b></span>
+        <span class="price">benchmark</span>
+      </div>
+    </div>
+    <div class="dial-stage">
+      <svg class="dial" viewBox="0 0 400 400" role="img" aria-label="Apple-style activity rings: Move, Exercise and Stand">
+        <circle cx="200" cy="200" r="150" fill="none" stroke="#23262D" stroke-width="22"/>
+        <circle cx="200" cy="200" r="116" fill="none" stroke="#23262D" stroke-width="22"/>
+        <circle cx="200" cy="200" r="82" fill="none" stroke="#23262D" stroke-width="22"/>
+        <circle class="rg move" cx="200" cy="200" r="150" stroke-width="22"/>
+        <circle class="rg ex" cx="200" cy="200" r="116" stroke-width="22"/>
+        <circle class="rg stand" cx="200" cy="200" r="82" stroke-width="22"/>
+        <text x="200" y="196" text-anchor="middle" fill="#9aa0ab" font-family="Saira Condensed,sans-serif" font-size="15" letter-spacing="3" font-weight="600">ACTIVITY</text>
+        <text x="200" y="216" text-anchor="middle" fill="#6e7480" font-family="Space Mono,monospace" font-size="10" letter-spacing="2">APPLE&#8201;HEALTH</text>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<section class="wrap ladder-head">
+  <span class="eyebrow">How to read it</span>
+  <h2>One boundary that matters: rings vs steps.</h2>
+  <p>Every watch here counts steps and pushes them into Apple Health through its own app. But only Apple closes your Move, Exercise and Stand rings and lives natively in the Fitness app. Colour marks that line; grouped by brand below.</p>
+  <div class="key">
+    <span><i class="m"></i>Closes your Apple Fitness rings</span>
+    <span><i class="q"></i>Syncs steps to Apple Health</span>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="ladder">
+
+    <!-- APPLE -->
+    <section class="tier mech rv">
+      <div class="tier-top">
+        <span class="tier-price">£219–399</span>
+        <span class="chip">Apple Health · closes rings</span>
+      </div>
+      <div class="tier-name">Apple — the only ones that close your rings</div>
+      <div class="picks">
+        <div class="pick">
+          <span class="thumb"><img src="images-health/apple-watch-se2.jpg" alt="Apple Watch SE 2, midnight aluminium" loading="lazy"></span>
+          <span class="nm">Apple Watch SE 2</span>
+          <span class="spec"><b>~£219</b><br>40/44mm · rings</span>
+          <span class="note">The cheapest way to actually close your rings. Same core Health and Fitness integration as your Ultra — you just lose the always-on screen, the extra sensors and the titanium.</span>
+        </div>
+        <div class="pick">
+          <span class="thumb"><img src="images-health/apple-watch-series11.jpg" alt="Apple Watch Series 11" loading="lazy"></span>
+          <span class="nm">Apple Watch Series 11</span>
+          <span class="spec"><b>~£399</b><br>42/46mm · rings</span>
+          <span class="note">Always-on AMOLED, ECG, the full Fitness+ picture. The only non-Ultra Apple that does everything yours does for the rings, in a slimmer case.</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="threshold rv">
+      <span class="line" aria-hidden="true"></span>
+      <span class="label">Below here: steps, not rings
+        <span class="sub">Everything past Apple syncs your step count to Apple Health through its own app — but it won't close your Move / Exercise / Stand rings or sit inside the Fitness app. That's the one thing only Apple does.</span>
+      </span>
+    </div>
+
+    <!-- CASIO -->
+    <section class="tier quartz rv">
+      <div class="tier-top">
+        <span class="tier-price">£140–450</span>
+        <span class="chip">G-Shock Move / Casio app</span>
+      </div>
+      <div class="tier-name">Casio G-Shock — toughest steps in the room</div>
+      <div class="picks">
+        <div class="pick">
+          <span class="thumb"><img src="images-health/casio-gbd-300.jpg" alt="Casio G-Shock GBD-300, octagonal bezel" loading="lazy"></span>
+          <span class="nm">G-Shock GBD-300</span>
+          <span class="spec"><b>~£160</b><br>46×50 · digital</span>
+          <span class="note">Octagonal “CasiOak” bezel, classic shock-proof toughness. Steps sync via the G-Shock Move app on to Apple Health.<span class="flag">Standout for your taste</span></span>
+        </div>
+        <div class="pick">
+          <span class="thumb"><img src="images-health/casio-gbd-200.jpg" alt="Casio G-Shock GBD-200, square" loading="lazy"></span>
+          <span class="nm">G-Shock GBD-200</span>
+          <span class="spec"><b>~£140</b><br>46×49 · digital</span>
+          <span class="note">The square 5600 silhouette, slimmed and lightened, with step and run tracking. The value entry to a G-Shock that talks to Health.</span>
+        </div>
+        <div class="pick">
+          <span class="thumb"><img src="images-health/casio-ga-b010.jpg" alt="Casio G-Shock GA-B010, round, solar" loading="lazy"></span>
+          <span class="nm">G-Shock GA-B010</span>
+          <span class="spec"><b>~£150</b><br>49mm · solar</span>
+          <span class="note">Round analog-digital face with Tough Solar, so the battery is never a thought, plus step tracking over Bluetooth.</span>
+        </div>
+        <div class="pick">
+          <span class="thumb"><img src="images-health/casio-dw-h5600.jpg" alt="Casio G-Shock DW-H5600, square with heart rate" loading="lazy"></span>
+          <span class="nm">G-Shock DW-H5600</span>
+          <span class="spec"><b>~£230</b><br>45×51 · +HR</span>
+          <span class="note">The square 5600 with an optical heart-rate sensor, SpO2 and sleep — proper G-SQUAD health data in the classic shape.</span>
+        </div>
+        <div class="pick">
+          <span class="thumb"><img src="images-health/casio-gm-h5600.jpg" alt="Casio G-Shock GM-H5600, metal-clad square with heart rate" loading="lazy"></span>
+          <span class="nm">G-Shock GM-H5600</span>
+          <span class="spec"><b>~£330</b><br>45×52 · +HR</span>
+          <span class="note">Metal-clad 5600 with heart rate — the grown-up, heftier-wristed version of the DW-H5600.</span>
+        </div>
+        <div class="pick">
+          <span class="thumb"><img src="images-health/casio-gbd-h1000.jpg" alt="Casio G-Shock GBD-H1000, multisport with HR and GPS" loading="lazy"></span>
+          <span class="nm">G-Shock GBD-H1000</span>
+          <span class="spec"><b>~£260</b><br>55mm · HR/GPS</span>
+          <span class="note">Five sensors, built-in GPS and optical HR — a full multisport G-Shock that still feeds Apple Health. Large on the wrist.</span>
+        </div>
+        <div class="pick">
+          <span class="thumb"><img src="images-health/casio-gbd-h2000.jpg" alt="Casio G-Shock GBD-H2000, lightweight multisport" loading="lazy"></span>
+          <span class="nm">G-Shock GBD-H2000</span>
+          <span class="spec"><b>~£300</b><br>52mm · HR/GPS</span>
+          <span class="note">Lighter carbon-guard case, GPS and HR — the higher-end G-SQUAD Pro. Big, but far lighter than it looks.</span>
+        </div>
+        <div class="pick">
+          <span class="thumb"><img src="images-health/casio-gsw-h1000.jpg" alt="Casio G-Shock GSW-H1000, Wear OS smartwatch" loading="lazy"></span>
+          <span class="nm">G-Shock GSW-H1000</span>
+          <span class="spec"><b>~£450</b><br>56×66 · Wear OS</span>
+          <span class="note">The Wear OS G-Shock — full smartwatch apps on a shock-proof chassis. The largest watch on this page by some margin.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- WITHINGS -->
+    <section class="tier quartz rv">
+      <div class="tier-top">
+        <span class="tier-price">£60–320</span>
+        <span class="chip">Health Mate · analog</span>
+      </div>
+      <div class="tier-name">Withings — looks like a watch, counts like a tracker</div>
+      <div class="picks">
+        <div class="pick">
+          <span class="thumb"><img src="images-health/withings-scanwatch-2.jpg" alt="Withings ScanWatch 2, hybrid analog" loading="lazy"></span>
+          <span class="nm">Withings ScanWatch 2</span>
+          <span class="spec"><b>~£300</b><br>42mm · analog</span>
+          <span class="note">A proper hybrid: real hands over a small display, ECG, temperature and weeks of battery. The pick if you want a watch that never reads as a fitness band.<span class="flag">Standout for your taste</span></span>
+        </div>
+        <div class="pick">
+          <span class="thumb"><img src="images-health/withings-scanwatch-light.jpg" alt="Withings ScanWatch Light, hybrid analog" loading="lazy"></span>
+          <span class="nm">Withings ScanWatch Light</span>
+          <span class="spec"><b>~£90</b><br>37mm · analog</span>
+          <span class="note">Hybrid analog with a tiny sub-dial and a step ring. Looks like a normal watch, syncs steps to Health — the cheapest classy option here.</span>
+        </div>
+        <div class="pick">
+          <span class="thumb"><img src="images-health/withings-move.jpg" alt="Withings Move, analog step tracker" loading="lazy"></span>
+          <span class="nm">Withings Move</span>
+          <span class="spec"><b>~£60</b><br>38mm · analog</span>
+          <span class="note">The budget hybrid — analog hands, a step sub-dial and an 18-month coin-cell battery. The cheapest door into Apple Health on this page.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- GARMIN -->
+    <section class="tier quartz rv">
+      <div class="tier-top">
+        <span class="tier-price">£250–430</span>
+        <span class="chip">Garmin Connect</span>
+      </div>
+      <div class="tier-name">Garmin — steps sync fine; the Move ring is unreliable</div>
+      <div class="picks">
+        <div class="pick">
+          <span class="thumb"><img src="images-health/garmin-vivoactive-5.jpg" alt="Garmin Vivoactive 5, AMOLED" loading="lazy"></span>
+          <span class="nm">Garmin Vivoactive 5</span>
+          <span class="spec"><b>~£260</b><br>42mm · AMOLED</span>
+          <span class="note">Bright AMOLED all-rounder with strong sleep and health tracking. Steps land in Apple Health via Connect; closing the Apple Move ring is hit-and-miss.</span>
+        </div>
+        <div class="pick">
+          <span class="thumb"><img src="images-health/garmin-venu-3.jpg" alt="Garmin Venu 3, AMOLED" loading="lazy"></span>
+          <span class="nm">Garmin Venu 3</span>
+          <span class="spec"><b>~£430</b><br>45mm · AMOLED</span>
+          <span class="note">Garmin's flagship lifestyle watch — speaker and mic, deep health metrics, lovely screen. Steps sync cleanly.</span>
+        </div>
+        <div class="pick">
+          <span class="thumb"><img src="images-health/garmin-forerunner-165.jpg" alt="Garmin Forerunner 165, AMOLED running watch" loading="lazy"></span>
+          <span class="nm">Garmin Forerunner 165</span>
+          <span class="spec"><b>~£250</b><br>43mm · AMOLED</span>
+          <span class="note">Lightweight running watch with an AMOLED screen and excellent value for run data. Steps to Health.</span>
+        </div>
+        <div class="pick">
+          <span class="thumb"><img src="images-health/garmin-forerunner-265.jpg" alt="Garmin Forerunner 265, AMOLED running watch" loading="lazy"></span>
+          <span class="nm">Garmin Forerunner 265</span>
+          <span class="spec"><b>~£430</b><br>46mm · AMOLED</span>
+          <span class="note">A step up in training metrics and battery. The serious runner's pick that still feeds Health.</span>
+        </div>
+        <div class="pick">
+          <span class="thumb"><img src="images-health/garmin-instinct-3.jpg" alt="Garmin Instinct 3, rugged" loading="lazy"></span>
+          <span class="nm">Garmin Instinct 3</span>
+          <span class="spec"><b>~£300</b><br>45mm · rugged</span>
+          <span class="note">Rugged, enormous battery life, AMOLED or solar. The do-anything outdoors option that shrugs off abuse.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- POLAR -->
+    <section class="tier quartz rv">
+      <div class="tier-top">
+        <span class="tier-price">£160–260</span>
+        <span class="chip">Polar Flow</span>
+      </div>
+      <div class="tier-name">Polar — training science, lighter price</div>
+      <div class="picks">
+        <div class="pick">
+          <span class="thumb"><img src="images-health/polar-ignite-3.jpg" alt="Polar Ignite 3, AMOLED" loading="lazy"></span>
+          <span class="nm">Polar Ignite 3</span>
+          <span class="spec"><b>~£260</b><br>43mm · AMOLED</span>
+          <span class="note">Slim AMOLED with genuinely good sleep and recovery science. Syncs steps via Polar Flow into Apple Health.</span>
+        </div>
+        <div class="pick">
+          <span class="thumb"><img src="images-health/polar-pacer.jpg" alt="Polar Pacer, GPS running watch" loading="lazy"></span>
+          <span class="nm">Polar Pacer</span>
+          <span class="spec"><b>~£160</b><br>45mm · GPS</span>
+          <span class="note">Stripped-back running watch — light, cheap and accurate. Steps to Health, no frills.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- COROS -->
+    <section class="tier quartz rv">
+      <div class="tier-top">
+        <span class="tier-price">£220</span>
+        <span class="chip">Coros app</span>
+      </div>
+      <div class="tier-name">Coros — featherweight, freakish battery</div>
+      <div class="picks">
+        <div class="pick">
+          <span class="thumb"><img src="images-health/coros-pace-3.jpg" alt="Coros Pace 3, GPS running watch" loading="lazy" class="op-r"></span>
+          <span class="nm">Coros Pace 3</span>
+          <span class="spec"><b>~£220</b><br>42mm · GPS</span>
+          <span class="note">Featherweight, with battery life that embarrasses everything else here, and a cult following among runners. Steps sync through the Coros app to Health.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUUNTO -->
+    <section class="tier quartz rv">
+      <div class="tier-top">
+        <span class="tier-price">£250–500</span>
+        <span class="chip">Suunto app</span>
+      </div>
+      <div class="tier-name">Suunto — adventure-grade</div>
+      <div class="picks">
+        <div class="pick">
+          <span class="thumb"><img src="images-health/suunto-race-s.jpg" alt="Suunto Race S, AMOLED" loading="lazy"></span>
+          <span class="nm">Suunto Race S</span>
+          <span class="spec"><b>~£250</b><br>45mm · AMOLED</span>
+          <span class="note">AMOLED, dual-band GPS and a digital crown — a lot of watch for the money. Steps to Health.</span>
+        </div>
+        <div class="pick">
+          <span class="thumb"><img src="images-health/suunto-vertical.jpg" alt="Suunto Vertical, offline maps" loading="lazy"></span>
+          <span class="nm">Suunto Vertical</span>
+          <span class="spec"><b>~£500</b><br>49mm · maps</span>
+          <span class="note">Big adventure watch with offline topo maps and a solar option. The priciest pick on the page — still comfortably under £700.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- AMAZFIT -->
+    <section class="tier quartz rv">
+      <div class="tier-top">
+        <span class="tier-price">£60–220</span>
+        <span class="chip">Zepp app</span>
+      </div>
+      <div class="tier-name">Amazfit — absurd value</div>
+      <div class="picks">
+        <div class="pick">
+          <span class="thumb"><img src="images-health/amazfit-bip-6.jpg" alt="Amazfit Bip 6, square AMOLED" loading="lazy"></span>
+          <span class="nm">Amazfit Bip 6</span>
+          <span class="spec"><b>~£60</b><br>46mm · AMOLED</span>
+          <span class="note">Astonishing value — a big AMOLED, GPS and heart rate for pennies. Steps sync via Zepp to Apple Health.</span>
+        </div>
+        <div class="pick">
+          <span class="thumb"><img src="images-health/amazfit-gtr-4.jpg" alt="Amazfit GTR 4, round AMOLED" loading="lazy"></span>
+          <span class="nm">Amazfit GTR 4</span>
+          <span class="spec"><b>~£170</b><br>46mm · AMOLED</span>
+          <span class="note">Round, handsome, with dual-band GPS and weeks of battery. The value all-rounder of the bunch.</span>
+        </div>
+        <div class="pick">
+          <span class="thumb"><img src="images-health/amazfit-balance.jpg" alt="Amazfit Balance, round AMOLED" loading="lazy"></span>
+          <span class="nm">Amazfit Balance</span>
+          <span class="spec"><b>~£220</b><br>46mm · AMOLED</span>
+          <span class="note">Amazfit's premium round watch — body-composition readings, readiness scores and a big bright screen. Steps to Health.</span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<section class="wrap sizes-sec">
+  <span class="eyebrow">On the wrist</span>
+  <h2>How they measure up.</h2>
+  <p class="intro">Each watch drawn to the same scale — round cases as circles, square ones as squares — set inside your Apple Watch Ultra's red 44&nbsp;×&nbsp;49&nbsp;mm outline, so you can see how each actually wears against the watch already on your wrist. A few of the G-Shocks are bigger than the Ultra.</p>
+  <div class="sizes-real">
+    <figure class="sw apple"><span class="cell"><span class="ref"></span><span class="lab">Apple Watch Ultra<b>44×49</b></span></span></figure>
+    <figure class="sw quartz" style="--w:56;--h:66"><span class="cell"><span class="ref"></span><span class="box"></span><span class="lab">G-Shock GSW-H1000<b>56×66</b></span></span></figure>
+    <figure class="sw quartz" style="--d:55"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">G-Shock GBD-H1000<b>55mm</b></span></span></figure>
+    <figure class="sw quartz" style="--d:52"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">G-Shock GBD-H2000<b>52mm</b></span></span></figure>
+    <figure class="sw quartz" style="--w:45;--h:52"><span class="cell"><span class="ref"></span><span class="box"></span><span class="lab">G-Shock GM-H5600<b>45×52</b></span></span></figure>
+    <figure class="sw quartz" style="--w:45;--h:51"><span class="cell"><span class="ref"></span><span class="box"></span><span class="lab">G-Shock DW-H5600<b>45×51</b></span></span></figure>
+    <figure class="sw quartz" style="--w:46;--h:50"><span class="cell"><span class="ref"></span><span class="box"></span><span class="lab">G-Shock GBD-300<b>46×50</b></span></span></figure>
+    <figure class="sw quartz" style="--d:49"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Suunto Vertical<b>49mm</b></span></span></figure>
+    <figure class="sw quartz" style="--d:49"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">G-Shock GA-B010<b>49mm</b></span></span></figure>
+    <figure class="sw quartz" style="--w:46;--h:49"><span class="cell"><span class="ref"></span><span class="box"></span><span class="lab">G-Shock GBD-200<b>46×49</b></span></span></figure>
+    <figure class="sw quartz" style="--d:46"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Forerunner 265<b>46mm</b></span></span></figure>
+    <figure class="sw quartz" style="--d:46"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Amazfit GTR 4<b>46mm</b></span></span></figure>
+    <figure class="sw quartz" style="--d:46"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Amazfit Balance<b>46mm</b></span></span></figure>
+    <figure class="sw mech" style="--w:40;--h:46"><span class="cell"><span class="ref"></span><span class="box"></span><span class="lab">Apple Series 11<b>40×46</b></span></span></figure>
+    <figure class="sw quartz" style="--w:39;--h:46"><span class="cell"><span class="ref"></span><span class="box"></span><span class="lab">Amazfit Bip 6<b>39×46</b></span></span></figure>
+    <figure class="sw quartz" style="--d:45"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Garmin Venu 3<b>45mm</b></span></span></figure>
+    <figure class="sw quartz" style="--d:45"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Garmin Instinct 3<b>45mm</b></span></span></figure>
+    <figure class="sw quartz" style="--d:45"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Polar Pacer<b>45mm</b></span></span></figure>
+    <figure class="sw quartz" style="--d:45"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Suunto Race S<b>45mm</b></span></span></figure>
+    <figure class="sw mech" style="--w:38;--h:44"><span class="cell"><span class="ref"></span><span class="box"></span><span class="lab">Apple Watch SE 2<b>38×44</b></span></span></figure>
+    <figure class="sw quartz" style="--d:43"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Forerunner 165<b>43mm</b></span></span></figure>
+    <figure class="sw quartz" style="--d:43"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Polar Ignite 3<b>43mm</b></span></span></figure>
+    <figure class="sw quartz" style="--d:42"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Vivoactive 5<b>42mm</b></span></span></figure>
+    <figure class="sw quartz" style="--d:42"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Withings ScanWatch 2<b>42mm</b></span></span></figure>
+    <figure class="sw quartz" style="--d:42"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Coros Pace 3<b>42mm</b></span></span></figure>
+    <figure class="sw quartz" style="--d:38"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">Withings Move<b>38mm</b></span></span></figure>
+    <figure class="sw quartz" style="--d:37"><span class="cell"><span class="ref"></span><span class="ring"></span><span class="lab">ScanWatch Light<b>37mm</b></span></span></figure>
+  </div>
+  <div class="sizes-key">
+    <span><i class="m"></i>Closes your rings (Apple)</span>
+    <span><i class="q"></i>Syncs steps to Health</span>
+    <span><i class="a"></i>Apple Watch Ultra (red) — behind each as your reference</span>
+  </div>
+  <p class="intro" style="margin-top:16px;font-size:.82rem">Outlines to scale; nominal case sizes (round = diameter, square = width × height), crowns and pushers excluded. The red dashed shape is your Apple Watch Ultra (44&nbsp;×&nbsp;49&nbsp;mm) behind every watch.</p>
+</section>
+
+<section class="wrap read">
+  <span class="eyebrow">The honest read</span>
+  <h2>Two questions. Answer one, and the pick is obvious.</h2>
+  <div class="paths">
+    <div class="path mech rv">
+      <h3>Do you need to close the rings?</h3>
+      <p>If the Move / Exercise / Stand rings and native Fitness app are the point, there's no workaround — it has to be Apple. The SE 2 is the cheapest watch here that does exactly what your Ultra does for the rings. Everything else only feeds steps.</p>
+      <p class="out">Stop at <b>Apple Watch SE 2</b>, ~£219.</p>
+    </div>
+    <div class="path look rv">
+      <h3>Or just steps in Health — with character?</h3>
+      <p>If you only need the step count to land in Apple Health and you'd rather have looks, battery or toughness, go where your wrist and taste lead. For a watch that doesn't read as a tracker, the hybrid; for digital toughness, the octagon.</p>
+      <p class="out">Stop at <b>Withings ScanWatch 2</b> (~£300) — or <b>G-Shock GBD-300</b> (~£160).</p>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">
+  <div class="rule"></div>
+  Prices indicative UK street, June 2026 — verify current. All under £700, step counting, syncs to Apple Health. Excludes Fitbit (no native Health sync) and Samsung (Android-bound). Only Apple closes the Fitness rings. · <a href="field-chrono-ladder.html">← The Field Chronograph Ladder</a>
+</footer>
+
+<script>
+  // scroll reveal
+  (function(){
+    var els=document.querySelectorAll('.rv');
+    if(!('IntersectionObserver'in window)){els.forEach(function(e){e.classList.add('in')});return;}
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+    },{threshold:.14});
+    els.forEach(function(e){io.observe(e);});
+  })();
+</script>
+
+</body>
+</html>
